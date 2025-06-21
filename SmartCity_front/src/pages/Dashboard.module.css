@@ -1,0 +1,151 @@
+.body {
+  min-height: 100vh;
+  background: #F6F6F6;
+  margin: 0;
+  font-family: 'Inter', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.header, .footer {
+  width: 100%;
+  background: #333333;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.headerLeft {
+  font-size: 28px;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+
+.headerRight {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.headerLink {
+  color: #FFFFFF;
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+.headerLink:hover {
+  color: #0897B8;
+  background: #222;
+}
+
+.main {
+  flex: 1;
+  padding: 32px 0;
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  margin: 0 auto 32px auto;
+  padding: 32px 24px;
+  max-width: 1000px;
+  width: 100%;
+}
+
+h2 {
+  color: #333;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+label {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  color: #333;
+}
+
+select {
+  margin-left: 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background: #F6F6F6;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+
+th, td {
+  padding: 12px 8px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background: #F6F6F6;
+  color: #333;
+  font-weight: bold;
+}
+
+tr:hover {
+  background: #f0f8fa;
+}
+
+button {
+  background: #0897B8;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  margin: 4px 4px 4px 0;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover {
+  background: #066b85;
+}
+
+.footer {
+  justify-content: center;
+  font-size: 1rem;
+  color: #F6F6F6;
+  padding: 16px 0;
+  margin-top: auto;
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .card {
+    max-width: 98vw;
+    padding: 16px 4px;
+  }
+  .header, .footer {
+    padding: 16px 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .headerRight {
+    gap: 12px;
+  }
+  table, th, td {
+    font-size: 0.95rem;
+  }
+}

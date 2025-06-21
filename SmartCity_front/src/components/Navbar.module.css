@@ -1,0 +1,17 @@
+.nav {
+  background: #333333;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.link {
+  color: #fff;
+  margin: 0 16px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: text-decoration 0.2s;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
