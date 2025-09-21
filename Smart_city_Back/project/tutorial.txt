@@ -1,0 +1,20 @@
+✅ Pacotes que você deve instalar
+Rode este comando no seu PowerShell (com o ambiente virtual .venv ativado):
+
+( pip install django djangorestframework djangorestframework-simplejwt django-cors-headers django-filter )
+
+-----------------------------------------------------------------------------------------------------------
+
+✅ instalar biblioteca que gera automaticamente documentação
+
+pip install drf-yasg
+pip install
+
+-----------------------------------------------------------------------------------------------------------
+
+✅ Senha Django-admin
+
+username: admin
+password: 123
+
+-----------------------------------------------------------------------------------------------------------
