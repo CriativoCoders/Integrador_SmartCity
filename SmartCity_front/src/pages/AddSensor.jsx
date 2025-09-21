@@ -8,15 +8,40 @@ export default function AddSensor() {
   const [tipo, setTipo] = useState("temperatura");
   const [valor, setValor] = useState("");
   const [localizacao, setLocalizacao] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
+  // Função para enviar os dados do formulário
   async function handleSubmit(e) {
     e.preventDefault();
+    setError("");
+
+    // Validação básica
+    if (!valor.trim() || !localizacao.trim()) {
+      setError("Por favor, preencha todos os campos.");
+      return;
+    }
+
     const token = localStorage.getItem("token");
-    await addSensor({ tipo, valor, localizacao }, token);
-    navigate("/dashboard");
+    if (!token) {
+      setError("Usuário não autenticado. Faça login novamente.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await addSensor({ tipo, valor, localizacao }, token);
+      navigate("/dashboard");
+    } catch {
+      setError("Erro ao salvar sensor. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   }
 
+  // Logout simples, remove token e redireciona
   function handleLogout() {
     localStorage.removeItem("token");
     navigate("/");
@@ -24,23 +49,33 @@ export default function AddSensor() {
 
   return (
     <div className={styles.body}>
-      <header className={styles.header} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: "#333", color: "#fff", padding: "20px 40px" }}>
-        <span style={{ fontWeight: "bold", fontSize: "1.5rem" }}>Adicionar Sensor</span>
+      <header className={styles.header}>
+        <span className={styles.title}>Adicionar Sensor</span>
         <nav>
-          <Link to="/dashboard" style={{ color: "#fff", marginRight: "24px", textDecoration: "underline" }}>Voltar para Dashboard</Link>
-          <button onClick={handleLogout} style={{ color: "#0897B8", background: "none", border: "none", fontWeight: "bold", cursor: "pointer", textDecoration: "underline" }}>Sair</button>
+          <Link to="/dashboard" className={styles.link}>
+            Voltar para Dashboard
+          </Link>
+          <button onClick={handleLogout} className={styles.logoutButton}>
+            Sair
+          </button>
         </nav>
       </header>
-      <div className={styles.card}>
+
+      <main className={styles.card}>
         <form onSubmit={handleSubmit}>
-          <div style={{ display: "flex", gap: "16px", marginBottom: "16px" }}>
-            <div style={{ flex: 1 }}>
-              <label style={{ fontWeight: "bold" }}>Tipo</label>
+          {error && <p className={styles.error}>{error}</p>}
+
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label htmlFor="tipo" className={styles.label}>
+                Tipo
+              </label>
               <select
+                id="tipo"
                 className={styles.input}
                 value={tipo}
-                onChange={e => setTipo(e.target.value)}
-                style={{ width: "100%" }}
+                onChange={(e) => setTipo(e.target.value)}
+                disabled={loading}
               >
                 <option value="temperatura">Temperatura</option>
                 <option value="umidade">Umidade</option>
@@ -48,38 +83,58 @@ export default function AddSensor() {
                 <option value="contador">Contador de Pessoas</option>
               </select>
             </div>
-            <div style={{ flex: 1 }}>
-              <label style={{ fontWeight: "bold" }}>Valor</label>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="valor" className={styles.label}>
+                Valor
+              </label>
               <input
-                className={styles.input}
+                id="valor"
+                type="number"
+                step="any"
                 placeholder="Valor"
+                className={styles.input}
                 value={valor}
-                onChange={e => setValor(e.target.value)}
-                style={{ width: "100%" }}
+                onChange={(e) => setValor(e.target.value)}
+                disabled={loading}
+                required
               />
             </div>
           </div>
-          <label style={{ fontWeight: "bold" }}>Localização</label>
-          <input
-            className={styles.input}
-            placeholder="Localização"
-            value={localizacao}
-            onChange={e => setLocalizacao(e.target.value)}
-            style={{ width: "100%", marginBottom: "16px" }}
-          />
-          <div>
-            <button className={styles.button} type="submit">Salvar</button>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="localizacao" className={styles.label}>
+              Localização
+            </label>
+            <input
+              id="localizacao"
+              type="text"
+              placeholder="Localização"
+              className={styles.input}
+              value={localizacao}
+              onChange={(e) => setLocalizacao(e.target.value)}
+              disabled={loading}
+              required
+            />
+          </div>
+
+          <div className={styles.buttons}>
+            <button className={styles.button} type="submit" disabled={loading}>
+              {loading ? "Salvando..." : "Salvar"}
+            </button>
             <button
               className={styles.button}
               type="button"
               onClick={() => navigate("/dashboard")}
+              disabled={loading}
               style={{ marginLeft: "8px" }}
             >
               Cancelar
             </button>
           </div>
         </form>
-      </div>
+      </main>
+
       <Footer />
     </div>
   );

@@ -6,28 +6,34 @@ import AuthHeader from "../components/AuthHeader";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [erro, setErro] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setErro("");
+    setErrorMsg("");
+
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/token/", {
+      const res = await fetch("http://127.0.0.1:8000/api/token/", { // Ajuste a URL conforme sua API JWT
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
+
       const data = await res.json();
-      if (res.ok && data.access) {
-        setErro(""); // Limpa o erro!
-        localStorage.setItem("token", data.access);
-        navigate("/sensors");
+
+      if (res.ok) {
+        // Salvar token no localStorage
+        localStorage.setItem("access_token", data.access);
+        localStorage.setItem("refresh_token", data.refresh);
+
+        // Redirecionar para a página protegida (ex: dashboard)
+        navigate("/dashboard");
       } else {
-        setErro("Usuário ou senha inválidos");
+        setErrorMsg(data.detail || "Usuário ou senha incorretos.");
       }
-    } catch {
-      setErro("Erro ao conectar com o servidor.");
+    } catch (error) {
+      setErrorMsg("Erro de conexão com o servidor.");
     }
   }
 
@@ -43,18 +49,24 @@ export default function Login() {
             className={styles.input}
             placeholder="Usuário"
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            autoComplete="username"
           />
           <input
             className={styles.input}
             type="password"
             placeholder="Senha"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            autoComplete="current-password"
           />
-          <button className={styles.button} type="submit">Entrar</button>
+          {errorMsg && <p className={styles.errorMsg}>{errorMsg}</p>}
+          <button className={styles.button} type="submit">
+            Entrar
+          </button>
         </form>
-        {erro && <div style={{ color: "red", marginTop: 16 }}>{erro}</div>}
       </div>
     </div>
   );
