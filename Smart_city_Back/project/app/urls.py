@@ -16,6 +16,8 @@ router.register(r'ambientes', AmbienteViewSet)
 router.register(r'sensores', SensorViewSet)
 router.register(r'historicos', HistoricoViewSet)
 
+
+
 urlpatterns = [
     path('', include(router.urls)),
     path('register/', RegisterView.as_view(), name='register'),

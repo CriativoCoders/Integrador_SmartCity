@@ -8,6 +8,9 @@ Rode este comando no seu PowerShell (com o ambiente virtual .venv ativado):
 ✅ instalar biblioteca que gera automaticamente documentação
 
 pip install drf-yasg
+pip install mysqlclient
+pip install pandas
+ pip install drf-spectacular
 pip install
 
 -----------------------------------------------------------------------------------------------------------
