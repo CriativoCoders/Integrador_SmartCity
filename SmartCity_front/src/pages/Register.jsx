@@ -4,33 +4,27 @@ import styles from "./Register.module.css";
 import AuthHeader from "../components/AuthHeader";
 
 export default function Register() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [username, setUsername] = useState(""); // campo de usuário
+  const [email, setEmail] = useState(""); // campo de email
+  const [password, setPassword] = useState(""); // campo de senha
+  const [errorMsg, setErrorMsg] = useState(""); // mensagem de erro
   const navigate = useNavigate();
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleSubmit(e) { // função de envio do furmulario para o backend, faz a validação e trata os erros
+    e.preventDefault(); // previnir o comportamento padrão do furmulario, caso contrario a pagina carrega.
 
     setErrorMsg(""); // Limpar erros anteriores
 
-    if (password !== confirm) {
-      setErrorMsg("As senhas não conferem.");
-      return;
-    }
-
-    try {
-      const res = await fetch("http://127.0.0.1:8000/api/register/", {
+    try { // aqui e feita a requisição, e tratatmento de erros
+      const res = await fetch("http://127.0.0.1:8000/api/register/", { // pagina de registro de usuario
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password }), // envia no formato json os dados do usuario.
       });
 
-      const data = await res.json();
+      const data = await res.json(); // aqui e pego a resposta do back
 
-      if (res.ok) {
+      if (res.ok) { // quando o cadastro for realizado com sucesso, vai para a pagina de login.
         alert("Cadastro realizado com sucesso!");
         navigate("/");
       } else {
@@ -87,21 +81,14 @@ export default function Register() {
             required
             autoComplete="email"
           />
+          // campo de confirmação de senha
+   
           <input
             className={styles.input}
             type="password"
             placeholder="Senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete="new-password"
-          />
-          <input
-            className={styles.input}
-            type="password"
-            placeholder="Confirmar Senha"
-            value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
             required
             autoComplete="new-password"
           />
